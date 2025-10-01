@@ -1072,7 +1072,7 @@ async function executeApiTool(
 async function main() {
 // Set up StreamableHTTP transport
   try {
-    await setupStreamableHttpServer(server, 3000);
+    await setupStreamableHttpServer(server, process.env.PORT ? parseInt(process.env.PORT) : 3000);
   } catch (error) {
     console.error("Error setting up StreamableHTTP server:", error);
     process.exit(1);
