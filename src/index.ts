@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-02T17:04:11.237Z
+ * Generated on: 2025-10-02T18:55:45.904Z
  */
 
 // Load environment variables from .env file
@@ -65,7 +65,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["healthCheck", {
     name: "healthCheck",
     description: `Health check endpoint for API status and authentication verification.`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api",
     executionParameters: [],
@@ -75,7 +75,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["listProjects", {
     name: "listProjects",
     description: `List Projects`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects",
     executionParameters: [],
@@ -85,7 +85,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createProject", {
     name: "createProject",
     description: `Create Project`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"title":{"type":"string","description":"The project title."},"visual_style":{"type":["string","null"],"description":"The visual style enum value.","enum":["Realistic 35mm Film","Oil Painting","Stop Frame Animation","CinePlastic","90s Comic Book Art","Origami Style","Storybook Style"]},"length_seconds":{"type":["number","null"],"description":"The video length in seconds (1-600)."}},"required":["title"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"title":{"type":"string","description":"The project title."},"visual_style":{"type":["string","null"],"description":"The visual style enum value.","enum":["Realistic 35mm Film","Oil Painting","Stop Frame Animation","CinePlastic","90s Comic Book Art","Origami Style","Storybook Style"]},"length_seconds":{"type":["number","null"],"description":"The video length in seconds (1-600)."}},"required":["title"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects",
     executionParameters: [],
@@ -95,7 +95,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getProject", {
     name: "getProject",
     description: `Retrieve the full project object`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}",
     executionParameters: [],
@@ -105,7 +105,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateProjectTitle", {
     name: "updateProjectTitle",
     description: `Update Project Title`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"title":{"type":"string","description":"The new project title."}},"required":["title"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"title":{"type":"string","description":"The new project title."}},"required":["title"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}",
     executionParameters: [],
@@ -115,7 +115,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["deleteProject", {
     name: "deleteProject",
     description: `Delete Project`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}",
     executionParameters: [],
@@ -125,7 +125,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getProjectDataSchema", {
     name: "getProjectDataSchema",
     description: `Retrieve the JSON schema for project data validation`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/data/schema",
     executionParameters: [],
@@ -135,7 +135,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getProjectData", {
     name: "getProjectData",
     description: `Retrieve the project's JSON data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/data",
     executionParameters: [],
@@ -145,7 +145,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateProjectData", {
     name: "updateProjectData",
     description: `Update Project Data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"data":{"type":"string","description":"Must be a valid JSON string."}},"required":["data"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"data":{"type":"string","description":"Must be a valid JSON string."}},"required":["data"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/data",
     executionParameters: [],
@@ -155,7 +155,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getProjectVersions", {
     name: "getProjectVersions",
     description: `Retrieve all versions of the project's data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/versions",
     executionParameters: [],
@@ -165,7 +165,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["revertProjectVersion", {
     name: "revertProjectVersion",
     description: `Revert the project data to a specific version`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"versionId":{"type":"string","description":"The version ID to revert to."}},"required":["versionId"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"versionId":{"type":"string","description":"The version ID to revert to."}},"required":["versionId"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/versions/{versionId}/revert",
     executionParameters: [],
@@ -175,7 +175,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["duplicateProject", {
     name: "duplicateProject",
     description: `Create a copy of the project with all data and storage assets`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/duplicate",
     executionParameters: [],
@@ -185,7 +185,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getScore", {
     name: "getScore",
     description: `Retrieve the score configuration from the project data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/score",
     executionParameters: [],
@@ -195,7 +195,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateScore", {
     name: "updateScore",
     description: `Update the score configuration in the project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Whether the full film score is generating"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Whether the full film score is generating"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/score",
     executionParameters: [],
@@ -205,7 +205,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["clearScore", {
     name: "clearScore",
     description: `Reset the score configuration to the default state`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/score",
     executionParameters: [],
@@ -215,7 +215,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeScoreUpload", {
     name: "finalizeScoreUpload",
     description: `Finalize a score upload and update the score URL in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/score/finalize-upload",
     executionParameters: [],
@@ -225,7 +225,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["setScoreProcessing", {
     name: "setScoreProcessing",
     description: `Set the processing status for score`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/score/processing",
     executionParameters: [],
@@ -235,7 +235,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getCharacters", {
     name: "getCharacters",
     description: `Retrieve all characters from the project data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/characters",
     executionParameters: [],
@@ -245,7 +245,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createCharacter", {
     name: "createCharacter",
     description: `Add a new character to the project data based on schema structure`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Character unique valid uuid."},"prompt":{"type":"string","description":"Character description prompt."},"processing":{"type":"boolean","description":"Whether the character image is generating. Defaults to false"}},"required":["id","prompt"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Character unique valid uuid."},"prompt":{"type":"string","description":"Character description prompt."},"processing":{"type":"boolean","description":"Whether the character image is generating. Defaults to false"}},"required":["id","prompt"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/characters",
     executionParameters: [],
@@ -255,7 +255,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getCharacter", {
     name: "getCharacter",
     description: `Retrieve a specific character by its ID`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/characters/{characterId}",
     executionParameters: [],
@@ -265,7 +265,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateCharacter", {
     name: "updateCharacter",
     description: `Update an existing character by its ID`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Character description prompt."},"processing":{"type":"boolean","description":"Whether the character image is generating"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Character description prompt."},"processing":{"type":"boolean","description":"Whether the character image is generating"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/characters/{characterId}",
     executionParameters: [],
@@ -275,7 +275,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["deleteCharacter", {
     name: "deleteCharacter",
     description: `Remove a character from the project data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/characters/{characterId}",
     executionParameters: [],
@@ -285,7 +285,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeCharacterImageUpload", {
     name: "finalizeCharacterImageUpload",
     description: `Finalize a character image upload and update the character image URL in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response."},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response."},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/characters/{characterId}/finalize-image-upload",
     executionParameters: [],
@@ -295,7 +295,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["setCharacterProcessing", {
     name: "setCharacterProcessing",
     description: `Set the processing status for a character`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/characters/{characterId}/processing",
     executionParameters: [],
@@ -305,7 +305,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getEnvironments", {
     name: "getEnvironments",
     description: `Retrieve all environments from the project data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/environments",
     executionParameters: [],
@@ -315,7 +315,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createEnvironment", {
     name: "createEnvironment",
     description: `Add a new environment to the project data based on schema structure`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Environment unique valid uuid."},"prompt":{"type":"string","description":"Environment description prompt."},"processing":{"type":"boolean","description":"Whether the environment image is generating."}},"required":["id","prompt"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Environment unique valid uuid."},"prompt":{"type":"string","description":"Environment description prompt."},"processing":{"type":"boolean","description":"Whether the environment image is generating."}},"required":["id","prompt"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/environments",
     executionParameters: [],
@@ -325,7 +325,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getEnvironment", {
     name: "getEnvironment",
     description: `Retrieve a specific environment by its ID`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}",
     executionParameters: [],
@@ -335,7 +335,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateEnvironment", {
     name: "updateEnvironment",
     description: `Update an existing environment by its ID`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Environment description prompt"},"processing":{"type":"boolean","description":"Whether the environment image is generating"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Environment description prompt"},"processing":{"type":"boolean","description":"Whether the environment image is generating"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}",
     executionParameters: [],
@@ -345,7 +345,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["deleteEnvironment", {
     name: "deleteEnvironment",
     description: `Remove an environment from the project data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}",
     executionParameters: [],
@@ -355,7 +355,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeEnvironmentImageUpload", {
     name: "finalizeEnvironmentImageUpload",
     description: `Finalize an environment image upload and update the environment image URL in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}/finalize-image-upload",
     executionParameters: [],
@@ -365,7 +365,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["setEnvironmentProcessing", {
     name: "setEnvironmentProcessing",
     description: `Set the processing status for an environment`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}/processing",
     executionParameters: [],
@@ -375,7 +375,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getScenes", {
     name: "getScenes",
     description: `Retrieve all scenes from the project data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/scenes",
     executionParameters: [],
@@ -385,7 +385,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getScene", {
     name: "getScene",
     description: `Retrieve a specific scene by its ID`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}",
     executionParameters: [],
@@ -395,7 +395,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateScene", {
     name: "updateScene",
     description: `Update an existing scene by its ID`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"number":{"type":"number","description":"Scene number starting from 1, increasing sequentially"},"label":{"type":"string","description":"Narrative function.","enum":["HOOK","FORESHADOW_VALUE_DISCOVERY","ALL_IS_LOST_SOLUTION_TRIGGER","CLIMAX_TWIST_PAYOFF","TRANSFORMATION_CTA"]},"visible_goal":{"type":"string","description":"The visible goal of the scene"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"number":{"type":"number","description":"Scene number starting from 1, increasing sequentially"},"label":{"type":"string","description":"Narrative function.","enum":["HOOK","FORESHADOW_VALUE_DISCOVERY","ALL_IS_LOST_SOLUTION_TRIGGER","CLIMAX_TWIST_PAYOFF","TRANSFORMATION_CTA"]},"visible_goal":{"type":"string","description":"The visible goal of the scene"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}",
     executionParameters: [],
@@ -405,7 +405,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getVisuals", {
     name: "getVisuals",
     description: `Retrieve all visuals for a specific scene`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals",
     executionParameters: [],
@@ -415,7 +415,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createVisual", {
     name: "createVisual",
     description: `Add a new visual to a scene with basic structure`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Visual unique valid uuid"},"number":{"type":"number","description":"Visual number inside this scene, starting from 1"},"duration_seconds":{"type":"number","description":"Playback duration in seconds (supports fractional values)"},"description":{"type":"string","description":"Visual short description"}},"required":["id","number","duration_seconds","description"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Visual unique valid uuid"},"number":{"type":"number","description":"Visual number inside this scene, starting from 1"},"duration_seconds":{"type":"number","description":"Playback duration in seconds (supports fractional values)"},"description":{"type":"string","description":"Visual short description"}},"required":["id","number","duration_seconds","description"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals",
     executionParameters: [],
@@ -425,7 +425,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getVisual", {
     name: "getVisual",
     description: `Retrieve a specific visual by scene ID and visual ID`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}",
     executionParameters: [],
@@ -435,7 +435,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisual", {
     name: "updateVisual",
     description: `Update an existing visual by scene ID and visual ID`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"number":{"type":"number","description":"Visual number inside this scene, starting from 1"},"duration_seconds":{"type":"number","description":"Playback duration in seconds (supports fractional values)"},"description":{"type":"string","description":"Visual short description"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"number":{"type":"number","description":"Visual number inside this scene, starting from 1"},"duration_seconds":{"type":"number","description":"Playback duration in seconds (supports fractional values)"},"description":{"type":"string","description":"Visual short description"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}",
     executionParameters: [],
@@ -445,7 +445,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["deleteVisual", {
     name: "deleteVisual",
     description: `Remove a visual from a scene`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}",
     executionParameters: [],
@@ -455,7 +455,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualVoiceover", {
     name: "updateVisualVoiceover",
     description: `Update the voiceover configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"text":{"type":"string","description":"The voiceover text"},"voiceover_url":{"type":"string","description":"Remote voiceover URL to download and store"},"voiceover_uploaded_url":{"type":"string","description":"Remote uploaded voiceover URL to download and store"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"text":{"type":"string","description":"The voiceover text"},"voiceover_url":{"type":"string","description":"Remote voiceover URL to download and store"},"voiceover_uploaded_url":{"type":"string","description":"Remote uploaded voiceover URL to download and store"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers",
     executionParameters: [],
@@ -465,7 +465,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeVisualVoiceoverUpload", {
     name: "finalizeVisualVoiceoverUpload",
     description: `Finalize a voiceover asset upload and update the voiceover_url in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers/finalize-upload",
     executionParameters: [],
@@ -475,7 +475,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeVisualVoiceoverUploaded", {
     name: "finalizeVisualVoiceoverUploaded",
     description: `Finalize an uploaded voiceover asset upload and update the voiceover_uploaded_url in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers/finalize-uploaded-upload",
     executionParameters: [],
@@ -485,7 +485,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualImage", {
     name: "updateVisualImage",
     description: `Update the text_to_image configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The full rendering instruction for text to image"},"visible_characters":{"type":"array","description":"List of character IDs visible in this image","items":{"type":"string"}},"visible_environments":{"type":"array","description":"List of environment IDs visible in this image","items":{"type":"string"}},"image_url":{"type":"string","description":"Remote image URL to download and store"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The full rendering instruction for text to image"},"visible_characters":{"type":"array","description":"List of character IDs visible in this image","items":{"type":"string"}},"visible_environments":{"type":"array","description":"List of environment IDs visible in this image","items":{"type":"string"}},"image_url":{"type":"string","description":"Remote image URL to download and store"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/images",
     executionParameters: [],
@@ -495,7 +495,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeVisualImageUpload", {
     name: "finalizeVisualImageUpload",
     description: `Finalize a text_to_image asset upload and update the image_url in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/images/finalize-upload",
     executionParameters: [],
@@ -505,7 +505,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["setVisualImageProcessing", {
     name: "setVisualImageProcessing",
     description: `Set the processing status for text_to_image generation`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/images/processing",
     executionParameters: [],
@@ -515,7 +515,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualVideo", {
     name: "updateVisualVideo",
     description: `Update the image_to_video configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for image to video generation"},"video_url":{"type":"string","description":"Remote video URL to download and store"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for image to video generation"},"video_url":{"type":"string","description":"Remote video URL to download and store"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos",
     executionParameters: [],
@@ -525,7 +525,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeVisualVideoUpload", {
     name: "finalizeVisualVideoUpload",
     description: `Finalize an image_to_video asset upload and update the video_url in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos/finalize-upload",
     executionParameters: [],
@@ -535,7 +535,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["setVidualVideoProcessing", {
     name: "setVidualVideoProcessing",
     description: `Set the processing status for image_to_video generation`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos/processing",
     executionParameters: [],
@@ -545,7 +545,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualSound", {
     name: "updateVisualSound",
     description: `Update the sound configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for sound generation"},"sound_url":{"type":"string","description":"Remote sound URL to download and store"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for sound generation"},"sound_url":{"type":"string","description":"Remote sound URL to download and store"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/sounds",
     executionParameters: [],
@@ -555,7 +555,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeVisualSoundUpload", {
     name: "finalizeVisualSoundUpload",
     description: `Finalize a sound asset upload and update the sound_url in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/sounds/finalize-upload",
     executionParameters: [],
@@ -565,7 +565,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["setVisualSoundProcessing", {
     name: "setVisualSoundProcessing",
     description: `Set the processing status for sound generation`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/sounds/processing",
     executionParameters: [],
@@ -575,7 +575,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["getVideo", {
     name: "getVideo",
     description: `Retrieve the video configuration from the project data`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "get",
     pathTemplate: "/api/projects/{project_id}/video",
     executionParameters: [],
@@ -585,7 +585,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVideo", {
     name: "updateVideo",
     description: `Update the video configuration in the project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Whether the full stitched video is generating"}},"description":"The JSON request body."}}},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Whether the full stitched video is generating"}},"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/video",
     executionParameters: [],
@@ -595,7 +595,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["clearVideo", {
     name: "clearVideo",
     description: `Reset the video configuration to the default state`,
-    inputSchema: {"type":"object","properties":{}},
+    inputSchema: {"type":"object","properties":{"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}}},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/video",
     executionParameters: [],
@@ -605,7 +605,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["finalizeVideoUpload", {
     name: "finalizeVideoUpload",
     description: `Finalize a video upload and update the video URL in project data`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/video/finalize-upload",
     executionParameters: [],
@@ -615,7 +615,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["setVideoProcessing", {
     name: "setVideoProcessing",
     description: `Set the processing status for video`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."},"_authToken":{"type":"string","description":"Optional Bearer token to use for authentication (overrides environment variables)"}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/video/processing",
     executionParameters: [],
@@ -820,6 +820,12 @@ async function executeApiTool(
     const queryParams: Record<string, any> = {};
     const headers: Record<string, string> = { 'Accept': 'application/json' };
     let requestBodyData: any = undefined;
+
+    // Handle dynamic auth token
+    if (validatedArgs._authToken) {
+      headers['authorization'] = `Bearer ${validatedArgs._authToken}`;
+      delete validatedArgs._authToken;
+    }
 
     // Apply parameters to the URL path, query, or headers
     definition.executionParameters.forEach((param) => {

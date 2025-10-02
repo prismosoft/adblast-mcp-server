@@ -57,15 +57,21 @@ class MCPStreamableHttpServer {
       // Convert Fetch Request to Node.js req/res
       const { req, res } = toReqRes(c.req.raw);
 
-      // Reuse existing transport if we have a session ID
-      if (sessionId && this.transports[sessionId]) {
-        const transport = this.transports[sessionId];
+       // Reuse existing transport if we have a session ID
+       if (sessionId && this.transports[sessionId]) {
+         const transport = this.transports[sessionId];
 
-        // Add session ID to the request for auth token lookup
-        (req as any).sessionId = sessionId;
+         // Add session ID to the request for auth token lookup
+         (req as any).sessionId = sessionId;
 
-        // Handle the request with the transport
-        await transport.handleRequest(req, res, body);
+         // Update auth token if provided
+         if (authToken) {
+           this.sessionAuthTokens[sessionId] = authToken;
+           console.error(`Updated auth token for session: ${sessionId}`);
+         }
+
+         // Handle the request with the transport
+         await transport.handleRequest(req, res, body);
 
         // Cleanup when the response ends
         res.on('close', () => {
