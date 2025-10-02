@@ -25,7 +25,7 @@ class MCPStreamableHttpServer {
   server: Server;
   // Store active transports by session ID
   transports: {[sessionId: string]: StreamableHTTPServerTransport} = {};
-
+  
   constructor(server: Server) {
     this.server = server;
   }
@@ -43,95 +43,42 @@ class MCPStreamableHttpServer {
   /**
    * Handle POST requests (all MCP communication)
    */
-  async handlePostRequest(c: any) {
-    const sessionId = c.req.header(SESSION_ID_HEADER_NAME);
-    const token = c.req.query('token'); // Extract token from query parameter
-    console.error(`POST request received ${sessionId ? 'with session ID: ' + sessionId : 'without session ID'}${token ? ' (with token)' : ''}`);
+   async handlePostRequest(c: any) {
+     const sessionId = c.req.header(SESSION_ID_HEADER_NAME);
+     const token = c.req.query('token');
+     console.error(`POST request received ${sessionId ? 'with session ID: ' + sessionId : 'without session ID'}`);
 
-    // Set token for this request if provided
-    if (token) {
-      global.currentRequestToken = token;
-    }
+     // Set the bearer token from query string if present
+     if (token) {
+       (global as any).__mcpBearerToken = token;
+       console.error(`Bearer token extracted from query string`);
+     }
 
-    try {
-      const body = await c.req.json();
-
+     try {
+       const body = await c.req.json();
+      
       // Convert Fetch Request to Node.js req/res
       const { req, res } = toReqRes(c.req.raw);
-
+      
       // Reuse existing transport if we have a session ID
       if (sessionId && this.transports[sessionId]) {
         const transport = this.transports[sessionId];
-
+        
         // Handle the request with the transport
         await transport.handleRequest(req, res, body);
-
+        
         // Cleanup when the response ends
         res.on('close', () => {
           console.error(`Request closed for session ${sessionId}`);
+          // Clear the global token after request processing
+          if ((global as any).__mcpBearerToken) {
+            delete (global as any).__mcpBearerToken;
+          }
         });
-
+        
         // Convert Node.js response back to Fetch Response
         return toFetchResponse(res);
       }
-
-      // Create new transport for initialize requests
-      if (!sessionId && this.isInitializeRequest(body)) {
-        console.error("Creating new StreamableHTTP transport for initialize request");
-
-        const transport = new StreamableHTTPServerTransport({
-          sessionIdGenerator: () => uuid(),
-        });
-
-        // Add error handler for debug purposes
-        transport.onerror = (err) => {
-          console.error('StreamableHTTP transport error:', err);
-        };
-
-        // Connect the transport to the MCP server
-        await this.server.connect(transport);
-
-        // Handle the request with the transport
-        await transport.handleRequest(req, res, body);
-
-        // Store the transport if we have a session ID
-        const newSessionId = transport.sessionId;
-        if (newSessionId) {
-          console.error(`New session established: ${newSessionId}${token ? ' (with token)' : ''}`);
-          this.transports[newSessionId] = transport;
-
-          // Set up clean-up for when the transport is closed
-          transport.onclose = () => {
-            console.error(`Session closed: ${newSessionId}`);
-            delete this.transports[newSessionId];
-          };
-        }
-
-        // Cleanup when the response ends
-        res.on('close', () => {
-          console.error(`Request closed for new session`);
-        });
-
-        // Convert Node.js response back to Fetch Response
-        return toFetchResponse(res);
-      }
-
-      // Invalid request (no session ID and not initialize)
-      return c.json(
-        this.createErrorResponse("Bad Request: invalid session ID or method."),
-        400
-      );
-    } catch (error) {
-      console.error('Error handling MCP request:', error);
-      return c.json(
-        this.createErrorResponse("Internal server error."),
-        500
-      );
-    } finally {
-      // Clean up token after request
-      global.currentRequestToken = undefined;
-    }
-  }
       
       // Create new transport for initialize requests
       if (!sessionId && this.isInitializeRequest(body)) {
@@ -168,6 +115,10 @@ class MCPStreamableHttpServer {
         // Cleanup when the response ends
         res.on('close', () => {
           console.error(`Request closed for new session`);
+          // Clear the global token after request processing
+          if ((global as any).__mcpBearerToken) {
+            delete (global as any).__mcpBearerToken;
+          }
         });
         
         // Convert Node.js response back to Fetch Response
@@ -181,6 +132,10 @@ class MCPStreamableHttpServer {
       );
     } catch (error) {
       console.error('Error handling MCP request:', error);
+      // Clear the global token on error
+      if ((global as any).__mcpBearerToken) {
+        delete (global as any).__mcpBearerToken;
+      }
       return c.json(
         this.createErrorResponse("Internal server error."),
         500

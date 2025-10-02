@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-02T20:36:24.742Z
+ * Generated on: 2025-10-02T21:07:14.860Z
  */
 
 // Load environment variables from .env file
@@ -48,13 +48,6 @@ interface McpToolDefinition {
 export const SERVER_NAME = "adblast-api-documentation";
 export const SERVER_VERSION = "1.0.0";
 export const API_BASE_URL = "https://dev.adblast.ai";
-
-/**
- * Global variable for current request token (extracted from query string)
- */
-declare global {
-  var currentRequestToken: string | undefined;
-}
 
 /**
  * MCP Server instance
@@ -856,17 +849,17 @@ async function executeApiTool(
                 return !!process.env[`API_KEY_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
             }
             
-            // HTTP security (basic, bearer)
-            if (scheme.type === 'http') {
-                if (scheme.scheme?.toLowerCase() === 'bearer') {
-                    // Check for token from query string or env var
-                    return !!(global.currentRequestToken || process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`]);
-                }
-                else if (scheme.scheme?.toLowerCase() === 'basic') {
-                    return !!process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`] && 
-                           !!process.env[`BASIC_PASSWORD_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
-                }
-            }
+             // HTTP security (basic, bearer)
+             if (scheme.type === 'http') {
+                 if (scheme.scheme?.toLowerCase() === 'bearer') {
+                     // Check for token from query string first, then env var
+                     return !!(global as any).__mcpBearerToken || !!process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
+                 }
+                 else if (scheme.scheme?.toLowerCase() === 'basic') {
+                     return !!process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`] &&
+                            !!process.env[`BASIC_PASSWORD_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
+                 }
+             }
             
             // OAuth2 security
             if (scheme.type === 'oauth2') {
@@ -921,28 +914,29 @@ async function executeApiTool(
                     }
                 }
             } 
-            // HTTP security (Bearer or Basic)
-            else if (scheme?.type === 'http') {
-                if (scheme.scheme?.toLowerCase() === 'bearer') {
-                    // Check for token from query string first, then env var
-                    let token = global.currentRequestToken;
-                    if (!token) {
-                        token = process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
-                    }
-                    if (token) {
-                        headers['authorization'] = `Bearer ${token}`;
-                        console.error(`Applied Bearer token for '${schemeName}' from ${global.currentRequestToken ? 'query string' : 'environment variable'}`);
-                    }
-                } 
-                else if (scheme.scheme?.toLowerCase() === 'basic') {
-                    const username = process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
-                    const password = process.env[`BASIC_PASSWORD_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
-                    if (username && password) {
-                        headers['authorization'] = `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`;
-                        console.error(`Applied Basic authentication for '${schemeName}'`);
-                    }
-                }
-            }
+             // HTTP security (Bearer or Basic)
+             else if (scheme?.type === 'http') {
+                 if (scheme.scheme?.toLowerCase() === 'bearer') {
+                     // First check for token from query string (global variable set by server)
+                     let token = (global as any).__mcpBearerToken;
+                     // Fall back to environment variable
+                     if (!token) {
+                         token = process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
+                     }
+                     if (token) {
+                         headers['authorization'] = `Bearer ${token}`;
+                         console.error(`Applied Bearer token for '${schemeName}'`);
+                     }
+                 }
+                 else if (scheme.scheme?.toLowerCase() === 'basic') {
+                     const username = process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
+                     const password = process.env[`BASIC_PASSWORD_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
+                     if (username && password) {
+                         headers['authorization'] = `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`;
+                         console.error(`Applied Basic authentication for '${schemeName}'`);
+                     }
+                 }
+             }
             // OAuth2 security
             else if (scheme?.type === 'oauth2') {
                 // First try to use a pre-provided token
