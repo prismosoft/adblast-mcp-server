@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-02T21:07:14.860Z
+ * Generated on: 2025-10-02T21:45:27.321Z
  */
 
 // Load environment variables from .env file
@@ -22,6 +22,12 @@ import { setupStreamableHttpServer } from "./streamable-http.js";
 import { z, ZodError } from 'zod';
 import { jsonSchemaToZod } from 'json-schema-to-zod';
 import axios, { type AxiosRequestConfig, type AxiosError } from 'axios';
+import { AsyncLocalStorage } from 'async_hooks';
+
+/**
+ * Async local storage for session-specific data
+ */
+export const sessionStorage = new AsyncLocalStorage<{ bearerToken?: string }>();
 
 /**
  * Type definition for JSON objects
@@ -769,7 +775,7 @@ async function acquireOAuth2Token(schemeName: string, scheme: any): Promise<stri
 
 /**
  * Executes an API tool with the provided arguments
- * 
+ *
  * @param toolName Name of the tool to execute
  * @param definition Tool definition
  * @param toolArgs Arguments provided by the user
@@ -852,8 +858,8 @@ async function executeApiTool(
              // HTTP security (basic, bearer)
              if (scheme.type === 'http') {
                  if (scheme.scheme?.toLowerCase() === 'bearer') {
-                     // Check for token from query string first, then env var
-                     return !!(global as any).__mcpBearerToken || !!process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
+                     // Check for token from session storage first, then env var
+                     return !!(sessionStorage.getStore()?.bearerToken) || !!process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
                  }
                  else if (scheme.scheme?.toLowerCase() === 'basic') {
                      return !!process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`] &&
@@ -917,9 +923,8 @@ async function executeApiTool(
              // HTTP security (Bearer or Basic)
              else if (scheme?.type === 'http') {
                  if (scheme.scheme?.toLowerCase() === 'bearer') {
-                     // First check for token from query string (global variable set by server)
-                     let token = (global as any).__mcpBearerToken;
-                     // Fall back to environment variable
+                     // Get token from session storage, fall back to environment variable
+                     let token = sessionStorage.getStore()?.bearerToken;
                      if (!token) {
                          token = process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
                      }

@@ -13,7 +13,7 @@ importers:
         version: 1.19.5(hono@4.9.9)
       '@modelcontextprotocol/sdk':
         specifier: ^1.10.0
-        version: 1.18.2
+        version: 1.19.1
       axios:
         specifier: ^1.9.0
         version: 1.12.2
@@ -54,8 +54,8 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@modelcontextprotocol/sdk@1.18.2':
-    resolution: {integrity: sha512-beedclIvFcCnPrYgHsylqiYJVJ/CI47Vyc4tY8no1/Li/O8U4BTlJfy6ZwxkYwx+Mx10nrgwSVrA7VBbhh4slg==}
+  '@modelcontextprotocol/sdk@1.19.1':
+    resolution: {integrity: sha512-3Y2h3MZKjec1eAqSTBclATlX+AbC6n1LgfVzRMJLt3v6w0RCYgwLrjbxPDbhsYHt6Wdqc/aCceNJYgj448ELQQ==}
     engines: {node: '>=18'}
 
   '@types/node@22.18.8':
@@ -485,7 +485,7 @@ snapshots:
     dependencies:
       hono: 4.9.9
 
-  '@modelcontextprotocol/sdk@1.18.2':
+  '@modelcontextprotocol/sdk@1.19.1':
     dependencies:
       ajv: 6.12.6
       content-type: 1.0.5
