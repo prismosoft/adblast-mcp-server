@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-01T21:49:25.988Z
+ * Generated on: 2025-10-02T00:19:15.056Z
  */
 
 // Load environment variables from .env file
@@ -1072,7 +1072,7 @@ async function executeApiTool(
 async function main() {
 // Set up StreamableHTTP transport
   try {
-    await setupStreamableHttpServer(server, process.env.PORT ? parseInt(process.env.PORT) : 3000);
+    await setupStreamableHttpServer(server, 3000);
   } catch (error) {
     console.error("Error setting up StreamableHTTP server:", error);
     process.exit(1);
