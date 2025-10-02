@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-02T19:09:42.720Z
+ * Generated on: 2025-10-02T20:36:24.742Z
  */
 
 // Load environment variables from .env file
@@ -48,6 +48,13 @@ interface McpToolDefinition {
 export const SERVER_NAME = "adblast-api-documentation";
 export const SERVER_VERSION = "1.0.0";
 export const API_BASE_URL = "https://dev.adblast.ai";
+
+/**
+ * Global variable for current request token (extracted from query string)
+ */
+declare global {
+  var currentRequestToken: string | undefined;
+}
 
 /**
  * MCP Server instance
@@ -625,11 +632,6 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
 ]);
 
 /**
- * Session-based authentication storage
- */
-const sessionAuthTokens: {[sessionId: string]: string} = {};
-
-/**
  * Security schemes from the OpenAPI spec
  */
 const securitySchemes =   {
@@ -658,23 +660,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
     console.error(`Error: Unknown tool requested: ${toolName}`);
     return { content: [{ type: "text", text: `Error: Unknown tool requested: ${toolName}` }] };
   }
-
-  // Get session auth token if available
-  const sessionId = (request as any).sessionId;
-  let sessionAuthToken = sessionId ? sessionAuthTokens[sessionId] : undefined;
-
-  // Fallback to auth token from request URL
-  if (!sessionAuthToken) {
-    sessionAuthToken = (request as any).authToken;
-  }
-
-  // Add session auth token to tool args
-  const enhancedToolArgs = {
-    ...(toolArgs ?? {}),
-    _sessionAuthToken: sessionAuthToken
-  };
-
-  return await executeApiTool(toolName, toolDefinition, enhancedToolArgs, securitySchemes);
+  return await executeApiTool(toolName, toolDefinition, toolArgs ?? {}, securitySchemes);
 });
 
 
@@ -823,14 +809,8 @@ async function executeApiTool(
     // Prepare URL, query parameters, headers, and request body
     let urlPath = definition.pathTemplate;
     const queryParams: Record<string, any> = {};
-    const headers: Record<string, string> = { 'Accept': 'application/json', 'User-Agent': 'curl/7.68.0' };
+    const headers: Record<string, string> = { 'Accept': 'application/json' };
     let requestBodyData: any = undefined;
-
-    // Handle dynamic auth token
-    if (validatedArgs._authToken) {
-      headers['authorization'] = `Bearer ${validatedArgs._authToken}`;
-      delete validatedArgs._authToken;
-    }
 
     // Apply parameters to the URL path, query, or headers
     definition.executionParameters.forEach((param) => {
@@ -870,40 +850,31 @@ async function executeApiTool(
         return Object.entries(req).every(([schemeName, scopesArray]) => {
             const scheme = allSecuritySchemes[schemeName];
             if (!scheme) return false;
-
-            // Check for session auth token first (for Bearer tokens)
-            if (scheme.type === 'http' && scheme.scheme?.toLowerCase() === 'bearer') {
-                const sessionAuthToken = validatedArgs._sessionAuthToken;
-                if (sessionAuthToken) {
-                    headers['authorization'] = `Bearer ${sessionAuthToken}`;
-                    console.error(`Applied session Bearer token for '${schemeName}'`);
-                    return true;
-                }
-            }
-
+            
             // API Key security (header, query, cookie)
             if (scheme.type === 'apiKey') {
                 return !!process.env[`API_KEY_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
             }
-
-            // HTTP security (basic, bearer) - fallback to env vars
+            
+            // HTTP security (basic, bearer)
             if (scheme.type === 'http') {
                 if (scheme.scheme?.toLowerCase() === 'bearer') {
-                    return !!process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
+                    // Check for token from query string or env var
+                    return !!(global.currentRequestToken || process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`]);
                 }
                 else if (scheme.scheme?.toLowerCase() === 'basic') {
-                    return !!process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`] &&
+                    return !!process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`] && 
                            !!process.env[`BASIC_PASSWORD_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
                 }
             }
-
+            
             // OAuth2 security
             if (scheme.type === 'oauth2') {
                 // Check for pre-existing token
                 if (process.env[`OAUTH_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`]) {
                     return true;
                 }
-
+                
                 // Check for client credentials for auto-acquisition
                 if (process.env[`OAUTH_CLIENT_ID_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`] &&
                     process.env[`OAUTH_CLIENT_SECRET_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`]) {
@@ -912,15 +883,15 @@ async function executeApiTool(
                         return true;
                     }
                 }
-
+                
                 return false;
             }
-
+            
             // OpenID Connect
             if (scheme.type === 'openIdConnect') {
                 return !!process.env[`OPENID_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
             }
-
+            
             return false;
         });
     });
@@ -930,35 +901,39 @@ async function executeApiTool(
         // Apply each security scheme from this requirement (combined with AND)
         for (const [schemeName, scopesArray] of Object.entries(appliedSecurity)) {
             const scheme = allSecuritySchemes[schemeName];
-
+            
             // API Key security
             if (scheme?.type === 'apiKey') {
                 const apiKey = process.env[`API_KEY_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
                 if (apiKey) {
                     if (scheme.in === 'header') {
                         headers[scheme.name.toLowerCase()] = apiKey;
+                        console.error(`Applied API key '${schemeName}' in header '${scheme.name}'`);
                     }
                     else if (scheme.in === 'query') {
                         queryParams[scheme.name] = apiKey;
+                        console.error(`Applied API key '${schemeName}' in query parameter '${scheme.name}'`);
                     }
                     else if (scheme.in === 'cookie') {
                         // Add the cookie, preserving other cookies if they exist
                         headers['cookie'] = `${scheme.name}=${apiKey}${headers['cookie'] ? `; ${headers['cookie']}` : ''}`;
+                        console.error(`Applied API key '${schemeName}' in cookie '${scheme.name}'`);
                     }
                 }
-            }
-            // HTTP security (Bearer or Basic) - fallback to env vars if no session token
+            } 
+            // HTTP security (Bearer or Basic)
             else if (scheme?.type === 'http') {
                 if (scheme.scheme?.toLowerCase() === 'bearer') {
-                    // Session token already applied above, check env var fallback
-                    if (!headers['authorization']) {
-                        const token = process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
-                        if (token) {
-                            headers['authorization'] = `Bearer ${token}`;
-                            console.error(`Applied Bearer token for '${schemeName}'`);
-                        }
+                    // Check for token from query string first, then env var
+                    let token = global.currentRequestToken;
+                    if (!token) {
+                        token = process.env[`BEARER_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
                     }
-                }
+                    if (token) {
+                        headers['authorization'] = `Bearer ${token}`;
+                        console.error(`Applied Bearer token for '${schemeName}' from ${global.currentRequestToken ? 'query string' : 'environment variable'}`);
+                    }
+                } 
                 else if (scheme.scheme?.toLowerCase() === 'basic') {
                     const username = process.env[`BASIC_USERNAME_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
                     const password = process.env[`BASIC_PASSWORD_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
@@ -972,18 +947,18 @@ async function executeApiTool(
             else if (scheme?.type === 'oauth2') {
                 // First try to use a pre-provided token
                 let token = process.env[`OAUTH_TOKEN_${schemeName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase()}`];
-
+                
                 // If no token but we have client credentials, try to acquire a token
                 if (!token && (scheme.flows?.clientCredentials || scheme.flows?.password)) {
                     console.error(`Attempting to acquire OAuth token for '${schemeName}'`);
                     token = (await acquireOAuth2Token(schemeName, scheme)) ?? '';
                 }
-
+                
                 // Apply token if available
                 if (token) {
                     headers['authorization'] = `Bearer ${token}`;
                     console.error(`Applied OAuth2 token for '${schemeName}'`);
-
+                    
                     // List the scopes that were requested, if any
                     const scopes = scopesArray as string[];
                     if (scopes && scopes.length > 0) {
@@ -997,7 +972,7 @@ async function executeApiTool(
                 if (token) {
                     headers['authorization'] = `Bearer ${token}`;
                     console.error(`Applied OpenID Connect token for '${schemeName}'`);
-
+                    
                     // List the scopes that were requested, if any
                     const scopes = scopesArray as string[];
                     if (scopes && scopes.length > 0) {
@@ -1006,7 +981,7 @@ async function executeApiTool(
                 }
             }
         }
-    }
+    } 
     // Log warning if security is required but not available
     else if (definition.securityRequirements?.length > 0) {
         // First generate a more readable representation of the security requirements
@@ -1022,7 +997,7 @@ async function executeApiTool(
                 return `[${parts}]`;
             })
             .join(' OR ');
-
+            
         console.warn(`Tool '${toolName}' requires security: ${securityRequirementsString}, but no suitable credentials found.`);
     }
     
