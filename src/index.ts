@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-03T01:12:58.394Z
+ * Generated on: 2025-10-03T02:26:06.774Z
  */
 
 // Load environment variables from .env file
@@ -421,7 +421,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createVisual", {
     name: "createVisual",
     description: `Add a new visual to a scene with basic structure`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"requestBody":{"type":"object","properties":{"number":{"type":"number","description":"Visual number inside this scene, starting from 1"},"duration_seconds":{"type":"number","description":"Playback duration in seconds (supports fractional values)"},"description":{"type":"string","description":"Visual short description"},"id":{"type":"string","description":"Visual unique valid uuid"}},"required":["number","duration_seconds","description","id"],"description":"The JSON request body."}},"required":["project_id","sceneId","requestBody"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"requestBody":{"type":"object","properties":{"number":{"type":"number","description":"Visual number inside this scene, starting from 1"},"duration_seconds":{"type":"number","description":"Playback duration in seconds (supports fractional values)"},"description":{"type":"string","description":"Visual short description"}},"required":["number","duration_seconds","description"],"description":"The JSON request body."}},"required":["project_id","sceneId","requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"}],
