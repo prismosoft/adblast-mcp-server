@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-03T02:26:06.774Z
+ * Generated on: 2025-10-04T06:59:47.603Z
  */
 
 // Load environment variables from .env file
@@ -201,41 +201,31 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateScore", {
     name: "updateScore",
     description: `Update the score configuration in the project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Whether the full film score is generating"}},"description":"The JSON request body."}},"required":["project_id"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Score description prompt."}},"description":"The JSON request body."}},"required":["project_id"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/score",
     executionParameters: [{"name":"project_id","in":"path"}],
     requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
   }],
-  ["clearScore", {
-    name: "clearScore",
+  ["createScore", {
+    name: "createScore",
+    description: `Create and generate the score configuration`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Score description prompt."}},"required":["prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
+    method: "post",
+    pathTemplate: "/api/projects/{project_id}/score",
+    executionParameters: [{"name":"project_id","in":"path"}],
+    requestBodyContentType: "application/json",
+    securityRequirements: [{"default":[]}]
+  }],
+  ["deleteScore", {
+    name: "deleteScore",
     description: `Reset the score configuration to the default state`,
     inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/score",
     executionParameters: [{"name":"project_id","in":"path"}],
     requestBodyContentType: undefined,
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeScoreUpload", {
-    name: "finalizeScoreUpload",
-    description: `Finalize a score upload and update the score URL in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/score/finalize-upload",
-    executionParameters: [{"name":"project_id","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["setScoreProcessing", {
-    name: "setScoreProcessing",
-    description: `Set the processing status for score`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/score/processing",
-    executionParameters: [{"name":"project_id","in":"path"}],
-    requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
   }],
   ["getCharacters", {
@@ -251,7 +241,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createCharacter", {
     name: "createCharacter",
     description: `Add a new character to the project data based on schema structure`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Character unique valid uuid."},"prompt":{"type":"string","description":"Character description prompt."},"processing":{"type":"boolean","description":"Whether the character image is generating. Defaults to false"}},"required":["id","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Character unique valid uuid."},"name":{"type":"string","description":"Character name."},"prompt":{"type":"string","description":"Character description prompt."}},"required":["id","name","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/characters",
     executionParameters: [{"name":"project_id","in":"path"}],
@@ -271,7 +261,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateCharacter", {
     name: "updateCharacter",
     description: `Update an existing character by its ID`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"characterId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Character description prompt."},"processing":{"type":"boolean","description":"Whether the character image is generating"}},"description":"The JSON request body."}},"required":["project_id","characterId"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"characterId":{"type":"string"},"requestBody":{"type":"object","properties":{"name":{"type":"string","description":"Character name."},"prompt":{"type":"string","description":"Character description prompt."}},"description":"The JSON request body."}},"required":["project_id","characterId"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/characters/{characterId}",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"characterId","in":"path"}],
@@ -288,26 +278,6 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
-  ["finalizeCharacterImageUpload", {
-    name: "finalizeCharacterImageUpload",
-    description: `Finalize a character image upload and update the character image URL in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"characterId":{"type":"string"},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response."},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","characterId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/characters/{characterId}/finalize-image-upload",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"characterId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["setCharacterProcessing", {
-    name: "setCharacterProcessing",
-    description: `Set the processing status for a character`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"characterId":{"type":"string"},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["project_id","characterId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/characters/{characterId}/processing",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"characterId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
   ["getEnvironments", {
     name: "getEnvironments",
     description: `Retrieve all environments from the project data`,
@@ -321,7 +291,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createEnvironment", {
     name: "createEnvironment",
     description: `Add a new environment to the project data based on schema structure`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Environment unique valid uuid."},"prompt":{"type":"string","description":"Environment description prompt."},"processing":{"type":"boolean","description":"Whether the environment image is generating."}},"required":["id","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Environment unique valid uuid."},"name":{"type":"string","description":"Environment name."},"prompt":{"type":"string","description":"Environment description prompt."}},"required":["id","name","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/environments",
     executionParameters: [{"name":"project_id","in":"path"}],
@@ -341,7 +311,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateEnvironment", {
     name: "updateEnvironment",
     description: `Update an existing environment by its ID`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"environmentId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"Environment description prompt"},"processing":{"type":"boolean","description":"Whether the environment image is generating"}},"description":"The JSON request body."}},"required":["project_id","environmentId"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"environmentId":{"type":"string"},"requestBody":{"type":"object","properties":{"name":{"type":"string","description":"Environment name"},"prompt":{"type":"string","description":"Environment description prompt"}},"description":"The JSON request body."}},"required":["project_id","environmentId"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"environmentId","in":"path"}],
@@ -356,26 +326,6 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"environmentId","in":"path"}],
     requestBodyContentType: undefined,
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeEnvironmentImageUpload", {
-    name: "finalizeEnvironmentImageUpload",
-    description: `Finalize an environment image upload and update the environment image URL in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"environmentId":{"type":"string"},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","environmentId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/environments/{environmentId}/finalize-image-upload",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"environmentId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["setEnvironmentProcessing", {
-    name: "setEnvironmentProcessing",
-    description: `Set the processing status for an environment`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"environmentId":{"type":"string"},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["project_id","environmentId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/environments/{environmentId}/processing",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"environmentId","in":"path"}],
-    requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
   }],
   ["getScenes", {
@@ -461,29 +411,9 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualVoiceover", {
     name: "updateVisualVoiceover",
     description: `Update the voiceover configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"text":{"type":"string","description":"The voiceover text"},"voiceover_url":{"type":"string","description":"Remote voiceover URL to download and store"},"voiceover_uploaded_url":{"type":"string","description":"Remote uploaded voiceover URL to download and store"}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"text":{"type":"string","description":"The voiceover text"}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeVisualVoiceoverUpload", {
-    name: "finalizeVisualVoiceoverUpload",
-    description: `Finalize a voiceover asset upload and update the voiceover_url in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers/finalize-upload",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeVisualVoiceoverUploaded", {
-    name: "finalizeVisualVoiceoverUploaded",
-    description: `Finalize an uploaded voiceover asset upload and update the voiceover_uploaded_url in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers/finalize-uploaded-upload",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
     requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
@@ -491,29 +421,9 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualImage", {
     name: "updateVisualImage",
     description: `Update the text_to_image configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The full rendering instruction for text to image"},"visible_characters":{"type":"array","description":"List of character IDs visible in this image","items":{"type":"string"}},"visible_environments":{"type":"array","description":"List of environment IDs visible in this image","items":{"type":"string"}},"image_url":{"type":"string","description":"Remote image URL to download and store"}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The full rendering instruction for text to image"},"visible_characters":{"type":"array","description":"List of character IDs visible in this image","items":{"type":"string"}},"visible_environments":{"type":"array","description":"List of environment IDs visible in this image","items":{"type":"string"}}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/images",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeVisualImageUpload", {
-    name: "finalizeVisualImageUpload",
-    description: `Finalize a text_to_image asset upload and update the image_url in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/images/finalize-upload",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["setVisualImageProcessing", {
-    name: "setVisualImageProcessing",
-    description: `Set the processing status for text_to_image generation`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/images/processing",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
     requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
@@ -521,29 +431,9 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualVideo", {
     name: "updateVisualVideo",
     description: `Update the image_to_video configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for image to video generation"},"video_url":{"type":"string","description":"Remote video URL to download and store"}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for the image to video generation"}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeVisualVideoUpload", {
-    name: "finalizeVisualVideoUpload",
-    description: `Finalize an image_to_video asset upload and update the video_url in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos/finalize-upload",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["setVidualVideoProcessing", {
-    name: "setVidualVideoProcessing",
-    description: `Set the processing status for image_to_video generation`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos/processing",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
     requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
@@ -551,29 +441,9 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVisualSound", {
     name: "updateVisualSound",
     description: `Update the sound configuration for a specific visual`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for sound generation"},"sound_url":{"type":"string","description":"Remote sound URL to download and store"}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"prompt":{"type":"string","description":"The prompt for sound generation"}},"description":"The JSON request body."}},"required":["project_id","sceneId","visualId"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/sounds",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeVisualSoundUpload", {
-    name: "finalizeVisualSoundUpload",
-    description: `Finalize a sound asset upload and update the sound_url in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/sounds/finalize-upload",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["setVisualSoundProcessing", {
-    name: "setVisualSoundProcessing",
-    description: `Set the processing status for sound generation`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["project_id","sceneId","visualId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/sounds/processing",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
     requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
@@ -591,41 +461,31 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateVideo", {
     name: "updateVideo",
     description: `Update the video configuration in the project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Whether the full stitched video is generating"}},"description":"The JSON request body."}},"required":["project_id"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}/video",
     executionParameters: [{"name":"project_id","in":"path"}],
-    requestBodyContentType: "application/json",
+    requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
-  ["clearVideo", {
-    name: "clearVideo",
+  ["createVideo", {
+    name: "createVideo",
+    description: `Create and generate the full stitched video`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
+    method: "post",
+    pathTemplate: "/api/projects/{project_id}/video",
+    executionParameters: [{"name":"project_id","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
+  ["deleteVideo", {
+    name: "deleteVideo",
     description: `Reset the video configuration to the default state`,
     inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/video",
     executionParameters: [{"name":"project_id","in":"path"}],
     requestBodyContentType: undefined,
-    securityRequirements: [{"default":[]}]
-  }],
-  ["finalizeVideoUpload", {
-    name: "finalizeVideoUpload",
-    description: `Finalize a video upload and update the video URL in project data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"uuid":{"type":"string","description":"Upload UUID from S3M finalize response"},"cdn_url":{"type":"string","description":"CDN URL from S3M finalize response"},"path":{"type":"string","description":"Relative path from S3M finalize response"}},"required":["uuid","cdn_url","path"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/video/finalize-upload",
-    executionParameters: [{"name":"project_id","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["setVideoProcessing", {
-    name: "setVideoProcessing",
-    description: `Set the processing status for video`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"processing":{"type":"boolean","description":"Processing status"}},"required":["processing"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/video/processing",
-    executionParameters: [{"name":"project_id","in":"path"}],
-    requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
   }],
 ]);
@@ -727,7 +587,7 @@ async function acquireOAuth2Token(schemeName: string, scheme: any): Promise<stri
         }
         
         // Prepare the token request
-        const formData = new URLSearchParams();
+        let formData = new URLSearchParams();
         formData.append('grant_type', 'client_credentials');
         
         // Add scopes if specified
