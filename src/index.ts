@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-05T04:20:59.372Z
+ * Generated on: 2025-10-07T22:38:43.313Z
  */
 
 // Load environment variables from .env file
@@ -455,6 +455,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers/regenerate",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
+  ["bulkRegenerateVisualVoiceovers", {
+    name: "bulkRegenerateVisualVoiceovers",
+    description: `Force regeneration of voiceovers for all visuals with voiceover text in bulk`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
+    method: "post",
+    pathTemplate: "/api/projects/{project_id}/voiceovers/bulk-regenerate",
+    executionParameters: [{"name":"project_id","in":"path"}],
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
