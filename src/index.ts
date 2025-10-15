@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-07T22:38:43.313Z
+ * Generated on: 2025-10-15T19:14:23.245Z
  */
 
 // Load environment variables from .env file
@@ -91,7 +91,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createProject", {
     name: "createProject",
     description: `Create Project`,
-    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"title":{"type":"string","description":"The project title."},"visual_style":{"type":["string","null"],"description":"The visual style enum value.","enum":["Realistic 35mm Film","Oil Painting","Stop Frame Animation","CinePlastic","90s Comic Book Art","Origami Style","Storybook Style"]},"length_seconds":{"type":["number","null"],"description":"The video length in seconds (1-600)."}},"required":["title"],"description":"The JSON request body."}},"required":["requestBody"]},
+    inputSchema: {"type":"object","properties":{"requestBody":{"type":"object","properties":{"title":{"type":"string","description":"The project title."},"campaign_type":{"type":"string","description":"The campaign type enum value.","enum":["AI Filmmaking Community","Personal Brand / Service / Client","Cinematic Short Film Story (No Product)","Scale Your Skool Community"]},"visual_style":{"type":["string","null"],"description":"The visual style enum value.","enum":["Realistic 35mm Film","Oil Painting","Stop Frame Animation","CinePlastic","90s Comic Book Art","Origami Style","Storybook Style"]},"length_seconds":{"type":["number","null"],"description":"The video length in seconds (1-600)."},"aspect_ratio":{"type":"string","description":"The aspect ratio enum value.","enum":["9:16","1:1","16:9"]}},"required":["title","campaign_type","aspect_ratio"],"description":"The JSON request body."}},"required":["requestBody"]},
     method: "post",
     pathTemplate: "/api/projects",
     executionParameters: [],
@@ -111,7 +111,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["updateProject", {
     name: "updateProject",
     description: `Update Project`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"title":{"type":["string","null"],"description":"The new project title."},"ad_idea":{"type":["string","null"],"description":"The new ad idea description."},"niche":{"type":["string","null"],"description":"The niche enum value.","enum":["AI Filmmaking Community","Personal Brand / Service / Client","Cinematic Short Film Story (No Product)","Scale Your Skool Community"]},"tags":{"type":"array","description":"The tags for the project.","items":{"type":"string"}},"visual_style":{"type":["string","null"],"description":"The visual style enum value.","enum":["Realistic 35mm Film","Oil Painting","Stop Frame Animation","CinePlastic","90s Comic Book Art","Origami Style","Storybook Style"]},"length_seconds":{"type":["number","null"],"description":"The video length in seconds (1-600)."}},"description":"The JSON request body."}},"required":["project_id"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"title":{"type":["string","null"],"description":"The new project title."},"ad_idea":{"type":["string","null"],"description":"The new ad idea description."},"campaign_type":{"type":["string","null"],"description":"The campaign_type enum value.","enum":["AI Filmmaking Community","Personal Brand / Service / Client","Cinematic Short Film Story (No Product)","Scale Your Skool Community"]},"tags":{"type":"array","description":"The tags for the project.","items":{"type":"string"}},"visual_style":{"type":["string","null"],"description":"The visual style enum value.","enum":["Realistic 35mm Film","Oil Painting","Stop Frame Animation","CinePlastic","90s Comic Book Art","Origami Style","Storybook Style"]},"length_seconds":{"type":["number","null"],"description":"The video length in seconds (1-600)."},"aspect_ratio":{"type":["string","null"],"description":"The aspect ratio enum value.","enum":["9:16","1:1","16:9"]}},"description":"The JSON request body."}},"required":["project_id"]},
     method: "put",
     pathTemplate: "/api/projects/{project_id}",
     executionParameters: [{"name":"project_id","in":"path"}],
@@ -158,36 +158,6 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     requestBodyContentType: "application/json",
     securityRequirements: [{"default":[]}]
   }],
-  ["getProjectVersions", {
-    name: "getProjectVersions",
-    description: `Retrieve all versions of the project's data`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
-    method: "get",
-    pathTemplate: "/api/projects/{project_id}/versions",
-    executionParameters: [{"name":"project_id","in":"path"}],
-    requestBodyContentType: undefined,
-    securityRequirements: [{"default":[]}]
-  }],
-  ["revertProjectVersion", {
-    name: "revertProjectVersion",
-    description: `Revert the project data to a specific version`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"versionId":{"type":"string"},"requestBody":{"type":"object","properties":{"versionId":{"type":"string","description":"The version ID to revert to."}},"required":["versionId"],"description":"The JSON request body."}},"required":["project_id","versionId","requestBody"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/versions/{versionId}/revert",
-    executionParameters: [{"name":"project_id","in":"path"},{"name":"versionId","in":"path"}],
-    requestBodyContentType: "application/json",
-    securityRequirements: [{"default":[]}]
-  }],
-  ["duplicateProject", {
-    name: "duplicateProject",
-    description: `Create a copy of the project with all data and storage assets`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
-    method: "post",
-    pathTemplate: "/api/projects/{project_id}/duplicate",
-    executionParameters: [{"name":"project_id","in":"path"}],
-    requestBodyContentType: undefined,
-    securityRequirements: [{"default":[]}]
-  }],
   ["getScore", {
     name: "getScore",
     description: `Retrieve the score configuration from the project data`,
@@ -228,6 +198,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
+  ["isScoreGenerating", {
+    name: "isScoreGenerating",
+    description: `Check if the score is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/score/generating",
+    executionParameters: [{"name":"project_id","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
   ["regenerateScore", {
     name: "regenerateScore",
     description: `Force regeneration of the score`,
@@ -251,7 +231,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createCharacter", {
     name: "createCharacter",
     description: `Add a new character to the project data based on schema structure`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Character unique valid uuid."},"name":{"type":"string","description":"Character name."},"prompt":{"type":"string","description":"Character description prompt."}},"required":["id","name","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"name":{"type":"string","description":"Character name."},"prompt":{"type":"string","description":"Character description prompt."}},"required":["name","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/characters",
     executionParameters: [{"name":"project_id","in":"path"}],
@@ -288,6 +268,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
+  ["isCharacterGenerating", {
+    name: "isCharacterGenerating",
+    description: `Check if the character image is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"characterId":{"type":"string"}},"required":["project_id","characterId"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/characters/{characterId}/generating",
+    executionParameters: [{"name":"project_id","in":"path"},{"name":"characterId","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
   ["regenerateCharacterImage", {
     name: "regenerateCharacterImage",
     description: `Force regeneration of the character image`,
@@ -311,7 +301,7 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
   ["createEnvironment", {
     name: "createEnvironment",
     description: `Add a new environment to the project data based on schema structure`,
-    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"id":{"type":"string","description":"Environment unique valid uuid."},"name":{"type":"string","description":"Environment name."},"prompt":{"type":"string","description":"Environment description prompt."}},"required":["id","name","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"requestBody":{"type":"object","properties":{"name":{"type":"string","description":"Environment name."},"prompt":{"type":"string","description":"Environment description prompt."}},"required":["name","prompt"],"description":"The JSON request body."}},"required":["project_id","requestBody"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/environments",
     executionParameters: [{"name":"project_id","in":"path"}],
@@ -344,6 +334,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"environmentId":{"type":"string"}},"required":["project_id","environmentId"]},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/environments/{environmentId}",
+    executionParameters: [{"name":"project_id","in":"path"},{"name":"environmentId","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
+  ["isEnvironmentGenerating", {
+    name: "isEnvironmentGenerating",
+    description: `Check if the environment image is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"environmentId":{"type":"string"}},"required":["project_id","environmentId"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/environments/{environmentId}/generating",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"environmentId","in":"path"}],
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
@@ -438,6 +438,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
+  ["isVisualVoiceoverGenerating", {
+    name: "isVisualVoiceoverGenerating",
+    description: `Check if the visual voiceover is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"}},"required":["project_id","sceneId","visualId"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/voiceovers/generating",
+    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
   ["updateVisualVoiceover", {
     name: "updateVisualVoiceover",
     description: `Update the voiceover configuration for a specific visual`,
@@ -468,6 +478,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
+  ["isVisualImageGenerating", {
+    name: "isVisualImageGenerating",
+    description: `Check if the visual image is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"}},"required":["project_id","sceneId","visualId"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/images/generating",
+    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
   ["updateVisualImage", {
     name: "updateVisualImage",
     description: `Update the image configuration for a specific visual`,
@@ -488,6 +508,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
   }],
+  ["isVisualVideoGenerating", {
+    name: "isVisualVideoGenerating",
+    description: `Check if the visual video is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"}},"required":["project_id","sceneId","visualId"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos/generating",
+    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
   ["updateVisualVideo", {
     name: "updateVisualVideo",
     description: `Update the video configuration for a specific visual`,
@@ -504,6 +534,16 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"}},"required":["project_id","sceneId","visualId"]},
     method: "post",
     pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/videos/regenerate",
+    executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
+  ["isVisualSoundGenerating", {
+    name: "isVisualSoundGenerating",
+    description: `Check if the visual sound is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."},"sceneId":{"type":"string"},"visualId":{"type":"string"}},"required":["project_id","sceneId","visualId"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/scenes/{sceneId}/visuals/{visualId}/sounds/generating",
     executionParameters: [{"name":"project_id","in":"path"},{"name":"sceneId","in":"path"},{"name":"visualId","in":"path"}],
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
@@ -564,6 +604,26 @@ const toolDefinitionMap: Map<string, McpToolDefinition> = new Map([
     inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
     method: "delete",
     pathTemplate: "/api/projects/{project_id}/video",
+    executionParameters: [{"name":"project_id","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
+  ["isVideoGenerating", {
+    name: "isVideoGenerating",
+    description: `Check if the final video is currently being generated`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
+    method: "get",
+    pathTemplate: "/api/projects/{project_id}/video/generating",
+    executionParameters: [{"name":"project_id","in":"path"}],
+    requestBodyContentType: undefined,
+    securityRequirements: [{"default":[]}]
+  }],
+  ["regenerateVideo", {
+    name: "regenerateVideo",
+    description: `Force regeneration of the final video`,
+    inputSchema: {"type":"object","properties":{"project_id":{"type":"string","description":"The ID of the project."}},"required":["project_id"]},
+    method: "post",
+    pathTemplate: "/api/projects/{project_id}/video/regenerate",
     executionParameters: [{"name":"project_id","in":"path"}],
     requestBodyContentType: undefined,
     securityRequirements: [{"default":[]}]
