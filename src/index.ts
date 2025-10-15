@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * MCP Server generated from OpenAPI spec for adblast-api-documentation v1.0.0
- * Generated on: 2025-10-15T19:14:23.245Z
+ * Generated on: 2025-10-15T23:09:19.550Z
  */
 
 // Load environment variables from .env file

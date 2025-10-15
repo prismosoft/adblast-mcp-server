@@ -47,7 +47,7 @@ class MCPStreamableHttpServer {
    */
   async handlePostRequest(c: any) {
     const sessionId = c.req.header(SESSION_ID_HEADER_NAME);
-    const token = c.req.query('token');
+    const token = this.extractToken(c);
     console.error(`POST request received ${sessionId ? 'with session ID: ' + sessionId : 'without session ID'}`);
 
     try {
@@ -61,7 +61,11 @@ class MCPStreamableHttpServer {
          const transport = this.transports[sessionId];
 
          // Handle the request with the transport in session context
-         const sessionToken = this.sessionTokens[sessionId];
+         const sessionToken = token ?? this.sessionTokens[sessionId];
+         if (token && token !== this.sessionTokens[sessionId]) {
+           this.sessionTokens[sessionId] = token;
+           console.error(`Bearer token updated for session ${sessionId}`);
+         }
          await sessionStorage.run({ bearerToken: sessionToken }, async () => {
            await transport.handleRequest(req, res, body);
          });
@@ -137,6 +141,27 @@ class MCPStreamableHttpServer {
         500
       );
     }
+  }
+  
+  /**
+   * Extract bearer token from Authorization header or query parameter
+   */
+  private extractToken(c: any): string | undefined {
+    const authHeader = c.req.header('authorization');
+    if (authHeader) {
+      const match = authHeader.match(/^Bearer\s+(.+)$/i);
+      if (match) {
+        return match[1].trim();
+      }
+      return authHeader.trim();
+    }
+
+    const queryToken = c.req.query('token');
+    if (typeof queryToken === 'string' && queryToken.trim().length > 0) {
+      return queryToken.trim();
+    }
+
+    return undefined;
   }
   
   /**
