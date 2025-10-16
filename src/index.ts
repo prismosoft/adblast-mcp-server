@@ -788,6 +788,7 @@ async function executeApiTool(
     toolArgs: JsonObject,
     allSecuritySchemes: Record<string, any>
 ): Promise<CallToolResult> {
+  const debugEnabled = (process.env.MCP_SERVER_DEBUG ?? '').toLowerCase() === 'true';
   try {
     // Validate arguments against the input schema
     let validatedArgs: JsonObject;
@@ -1010,8 +1011,25 @@ async function executeApiTool(
       ...(requestBodyData !== undefined && { data: requestBodyData }),
     };
 
-    // Log request info to stderr (doesn't affect MCP output)
-    console.error(`Executing tool "${toolName}": ${config.method} ${config.url}`);
+    if (debugEnabled) {
+        const authHeader = headers['authorization'];
+        if (authHeader) {
+            const redactedAuth = authHeader.replace(/(Bearer\s+)(.{4}).+(.{4})/, (_match, prefix, start, end) => `${prefix}${start}...${end}`);
+            console.error(`Auth header applied for "${toolName}": ${redactedAuth}`);
+        } else {
+            console.error(`No Authorization header present for "${toolName}"`);
+        }
+        if (Object.keys(queryParams).length > 0) {
+            console.error(`Query params for "${toolName}": ${JSON.stringify(queryParams)}`);
+        }
+        if (requestBodyData !== undefined) {
+            const bodyPreview = JSON.stringify(requestBodyData);
+            console.error(`Request body for "${toolName}": ${bodyPreview.slice(0, 500)}${bodyPreview.length > 500 ? '... [truncated]' : ''}`);
+        }
+        console.error(`Executing tool "${toolName}": ${config.method} ${config.url}`);
+    } else {
+        console.error(`Executing tool "${toolName}"`);
+    }
     
     // Execute the request
     const response = await axios(config);
@@ -1042,6 +1060,9 @@ async function executeApiTool(
     }
     
     // Return formatted response
+    if (debugEnabled) {
+        console.error(`Tool "${toolName}" responded with status ${response.status}`);
+    }
     return { 
         content: [ 
             { 
@@ -1070,6 +1091,12 @@ async function executeApiTool(
     
     // Log error to stderr
     console.error(`Error during execution of tool '${toolName}':`, errorMessage);
+    if (debugEnabled && axios.isAxiosError(error) && error.response) {
+        const responseData = typeof error.response.data === 'string'
+            ? error.response.data
+            : JSON.stringify(error.response.data);
+        console.error(`Error response body for '${toolName}': ${responseData?.slice(0, 500)}${responseData && responseData.length > 500 ? '... [truncated]' : ''}`);
+    }
     
     // Return error message to client
     return { content: [{ type: "text", text: errorMessage }] };
